@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flash Energy Sibu - Servis Aircond & Pendawaian Elektrik</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/custom.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#0f172a'
+            },
+            accent: '#f59e0b'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+  <!-- Top Bar Contact Info -->
+  <header class="bg-slate-900 text-slate-300 text-xs sm:text-sm py-2 px-4 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-4">
+        <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4 text-sky-400"></i> No. 38 & 40, Jalan Intan, 96000 Sibu, Sarawak</span>
+        <span class="hidden md:flex items-center gap-1.5"><i data-lucide="mail" class="w-4 h-4 text-sky-400"></i> flashenergysibu@gmail.com</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://wa.me/60189596569" target="_blank" class="flex items-center gap-1.5 text-emerald-400 font-semibold hover:text-emerald-300 transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp: 018-959 6569
+        </a>
+        <a href="/admin" class="ml-2 bg-sky-800/80 hover:bg-sky-700 text-white px-2.5 py-0.5 rounded text-xs transition flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Portal Staf / Admin
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation -->
+  <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <img src="/logo.jpeg" alt="Flash Energy Logo" class="h-12 w-auto object-contain rounded-md shadow-sm border border-slate-100 group-hover:scale-105 transition duration-200">
+        <div>
+          <span class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-1">
+            FLASH ENERGY <span class="text-sky-600 font-bold text-sm bg-sky-100 px-2 py-0.5 rounded">SIBU</span>
+          </span>
+          <p class="text-xs text-slate-500 font-medium">Pakar Servis Aircond & Pendawaian Elektrik</p>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <button onclick="openTrackModal()" class="text-sm border border-slate-300 hover:border-sky-500 hover:text-sky-600 px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-1.5">
+          <i data-lucide="search" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Semak Status Tempahan</span>
+          <span class="sm:hidden">Semak</span>
+        </button>
+        <a href="#booking-section" class="bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm hover:shadow transition flex items-center gap-1.5">
+          <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+          <span>Tempah Servis</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-slate-900 via-sky-950 to-slate-900 text-white py-12 px-4 overflow-hidden">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+      <div class="lg:col-span-7 space-y-5">
+        <div class="inline-flex items-center gap-2 bg-sky-500/20 border border-sky-400/30 text-sky-300 px-3 py-1 rounded-full text-xs font-semibold">
+          <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Perkhidmatan Pantas, Kemas & Berkualiti di Sibu
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+          Penyelesaian Lengkap <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-amber-300">Aircond & Pendawaian Elektrik</span>
+        </h1>
+        <p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
+          Pakar juruteknik Flash Energy Sibu sedia membantu menyelesaikan masalah penghawa dingin bocor/kurang sejuk dan masalah pendawaian elektrik rumah & premis perniagaan anda.
+        </p>
+
+        <!-- Service Badges -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+          <div class="bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10">
+            <i data-lucide="wind" class="w-5 h-5 text-sky-400 mb-1"></i>
+            <div class="font-semibold text-sm">Servis & Chemical Wash</div>
+            <div class="text-xs text-slate-300">Aircond sejuk macam baru</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10">
+            <i data-lucide="plug-zap" class="w-5 h-5 text-amber-400 mb-1"></i>
+            <div class="font-semibold text-sm">Pendawaian & Tripping</div>
+            <div class="text-xs text-slate-300">DB box, soket & suis</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/10 col-span-2 sm:col-span-1">
+            <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400 mb-1"></i>
+            <div class="font-semibold text-sm">Jaminan Kerja & Resit</div>
+            <div class="text-xs text-slate-300">Juruelektrik berpengalaman</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 bg-white text-slate-800 p-6 rounded-2xl shadow-2xl border border-slate-100 space-y-4">
+        <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+          <div class="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 font-bold">
+            <i data-lucide="clock" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900">Waktu Operasi & Kawasan</h3>
+            <p class="text-xs text-slate-500">Seluruh Kawasan Sibu, Sarawak</p>
+          </div>
+        </div>
+        <ul class="text-sm space-y-2.5 text-slate-600">
+          <li class="flex items-start gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"></i>
+            <span><strong>Isnin - Ahad:</strong> 8:30 AM - 6:00 PM (Temujanji dibuka)</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"></i>
+            <span><strong>Kawasan Liputan:</strong> Pekan Sibu, Jalan Intan, Ulu Sg Merah, Pahlawan, Pedada, Lanang, Sibu Jaya & sekitar.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"></i>
+            <span><strong>Respon Segera:</strong> Pengesahan melalui WhatsApp terus daripada pasukan kami.</span>
+          </li>
+        </ul>
+        <div class="pt-2">
+          <a href="#booking-section" class="w-full block text-center bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition">
+            Isi Borang Tempahan Di Bawah
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Form Section -->
+  <main id="booking-section" class="max-w-4xl mx-auto px-4 py-12 flex-grow">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+      <!-- Form Header -->
+      <div class="bg-gradient-to-r from-sky-700 via-sky-600 to-sky-800 text-white p-6 sm:p-8">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="p-2 bg-white/20 rounded-lg"><i data-lucide="clipboard-list" class="w-6 h-6"></i></span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold">Borang Tempahan Servis</h2>
+        </div>
+        <p class="text-sky-100 text-sm sm:text-base">
+          Sila lengkapkan butiran di bawah. Staf Flash Energy Sibu akan menghubungi anda melalui WhatsApp untuk pengesahan slot masa.
+        </p>
+      </div>
+
+      <!-- Form Body -->
+      <form id="orderForm" class="p-6 sm:p-8 space-y-6">
+        
+        <!-- Customer Info Section -->
+        <div>
+          <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2 border-b pb-2">
+            <i data-lucide="user" class="w-5 h-5 text-sky-600"></i>
+            1. Maklumat Pelanggan
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Nama Penuh <span class="text-rose-500">*</span>
+              </label>
+              <input type="text" id="customer_name" required placeholder="Contoh: Wong King Sing" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-sm transition">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                No. Telefon / WhatsApp <span class="text-rose-500">*</span>
+              </label>
+              <input type="tel" id="phone" required placeholder="Contoh: 018-959 6569" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-sm transition">
+              <span class="text-xs text-slate-400 mt-1 block">Kami akan hubungi nombor ini di WhatsApp</span>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Emel (Pilihan)
+              </label>
+              <input type="email" id="email" placeholder="Contoh: nama@gmail.com" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-sm transition">
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Alamat Penuh Servis (Sibu) <span class="text-rose-500">*</span>
+              </label>
+              <textarea id="address" rows="2" required placeholder="Contoh: No. 12, Lorong Pahlawan 7, 96000 Sibu, Sarawak" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-sm transition"></textarea>
+              
+              <!-- Quick Sibu Location Helpers -->
+              <div class="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
+                <span>Pilih kawasan pantas:</span>
+                <button type="button" onclick="appendArea('Jalan Intan')" class="bg-slate-100 hover:bg-sky-100 hover:text-sky-700 px-2 py-0.5 rounded text-xs border border-slate-200">Jalan Intan</button>
+                <button type="button" onclick="appendArea('Lorong Pahlawan')" class="bg-slate-100 hover:bg-sky-100 hover:text-sky-700 px-2 py-0.5 rounded text-xs border border-slate-200">Pahlawan</button>
+                <button type="button" onclick="appendArea('Ulu Sungai Merah')" class="bg-slate-100 hover:bg-sky-100 hover:text-sky-700 px-2 py-0.5 rounded text-xs border border-slate-200">Ulu Sg Merah</button>
+                <button type="button" onclick="appendArea('Jalan Pedada')" class="bg-slate-100 hover:bg-sky-100 hover:text-sky-700 px-2 py-0.5 rounded text-xs border border-slate-200">Jalan Pedada</button>
+                <button type="button" onclick="appendArea('Sibu Jaya')" class="bg-slate-100 hover:bg-sky-100 hover:text-sky-700 px-2 py-0.5 rounded text-xs border border-slate-200">Sibu Jaya</button>
+                <button type="button" onclick="appendArea('Jalan Lanang')" class="bg-slate-100 hover:bg-sky-100 hover:text-sky-700 px-2 py-0.5 rounded text-xs border border-slate-200">Jalan Lanang</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Selection Section -->
+        <div>
+          <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2 border-b pb-2">
+            <i data-lucide="wrench" class="w-5 h-5 text-sky-600"></i>
+            2. Pilihan Servis
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <!-- Service Type Option 1: AC -->
+            <label class="cursor-pointer border-2 border-sky-200 hover:border-sky-500 rounded-xl p-4 transition bg-sky-50/50 flex flex-col justify-between" id="label-ac">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2.5">
+                  <input type="radio" name="service_type" value="Air Conditioning Service & Installation" checked onchange="toggleSubServices()" class="w-4 h-4 text-sky-600 focus:ring-sky-500">
+                  <span class="font-bold text-slate-900">Servis & Pemasangan Aircond</span>
+                </div>
+                <i data-lucide="wind" class="w-5 h-5 text-sky-600"></i>
+              </div>
+              <p class="text-xs text-slate-500 mt-2">Chemical wash, isi gas, aircond bocor air, baik pulih motor, pasang unit baru.</p>
+            </label>
+
+            <!-- Service Type Option 2: Wiring -->
+            <label class="cursor-pointer border-2 border-slate-200 hover:border-sky-500 rounded-xl p-4 transition bg-white flex flex-col justify-between" id="label-wiring">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2.5">
+                  <input type="radio" name="service_type" value="Electric Wiring" onchange="toggleSubServices()" class="w-4 h-4 text-sky-600 focus:ring-sky-500">
+                  <span class="font-bold text-slate-900">Pendawaian Elektrik (Wiring)</span>
+                </div>
+                <i data-lucide="zap" class="w-5 h-5 text-amber-500"></i>
+              </div>
+              <p class="text-xs text-slate-500 mt-2">Masalah elektrik trip, pasang lampu & kipas, soket plug baru, tukar DB box & MCB.</p>
+            </label>
+          </div>
+
+          <!-- Sub-Service Details Dropdown -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Kategori Spesifik <span class="text-rose-500">*</span>
+              </label>
+              <select id="service_subtype" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-sm transition bg-white">
+                <!-- Dynamically loaded based on service type -->
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Bilangan Unit / Titik (Point)
+              </label>
+              <input type="number" id="units_count" min="1" max="50" value="1" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-sm transition">
+            </div>
+          </div>
+        </div>
+
+        <!-- Appointment Date & Slot Section -->
+        <div>
+          <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2 border-b pb-2">
+            <i data-lucide="calendar" class="w-5 h-5 text-sky-600"></i>
+            3. Tarikh & Waktu Temujanji Pilihan
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Pilih Tarikh <span class="text-rose-500">*</span>
+              </label>
+              <input type="date" id="preferred_date" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-sm transition bg-white">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Slot Masa Pilihan <span class="text-rose-500">*</span>
+              </label>
+              <select id="preferred_time_slot" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-sm transition bg-white">
+                <option value="Pagi (9:00 AM - 12:00 PM)">Pagi (9:00 AM - 12:00 PM)</option>
+                <option value="Tengah Hari / Petang (1:00 PM - 5:00 PM)">Tengah Hari / Petang (1:00 PM - 5:00 PM)</option>
+                <option value="Petang / Malam (5:00 PM - 7:00 PM)">Petang (5:00 PM - 7:00 PM)</option>
+              </select>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Catatan Tambahan / Simptom Kerosakan (Pilihan)
+              </label>
+              <textarea id="notes" rows="2" placeholder="Contoh: Aircond bilik 1.5HP jenama Daikin menitik air ke atas katil sejak semalam..." class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-sm transition"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-slate-500 flex items-center gap-1.5">
+            <i data-lucide="lock" class="w-4 h-4 text-emerald-500"></i>
+            Maklumat anda dilindungi dan hanya digunakan untuk urusan perkhidmatan Flash Energy Sibu.
+          </div>
+          <button type="submit" id="submitBtn" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 text-base">
+            <i data-lucide="send" class="w-5 h-5"></i>
+            <span>Hantar Tempahan Sekarang</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Track Order Modal -->
+  <div id="trackModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <i data-lucide="search" class="w-5 h-5 text-sky-600"></i>
+          <h3 class="text-lg font-bold text-slate-900">Semak Status Tempahan</h3>
+        </div>
+        <button onclick="closeTrackModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="my-4">
+        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Masukkan No. Tempahan atau No. Telefon</label>
+        <div class="flex gap-2">
+          <input type="text" id="trackInput" placeholder="Contoh: FE-202610-001 atau 018-959 6569" class="flex-grow px-3.5 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 outline-none text-sm">
+          <button onclick="performTracking()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition">
+            Cari
+          </button>
+        </div>
+      </div>
+
+      <div id="trackResults" class="space-y-3 max-h-72 overflow-y-auto pr-1">
+        <p class="text-xs text-slate-400 text-center py-4">Sila masukkan kod tempahan atau no telefon anda untuk melihat rekod servis.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Success Modal -->
+  <div id="successModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl text-center space-y-4 border border-slate-100">
+      <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+        <i data-lucide="check-circle" class="w-10 h-10"></i>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-slate-900">Tempahan Berjaya Diterima!</h3>
+        <p class="text-xs text-slate-500 mt-1">Terima kasih kerana memilih Flash Energy Sibu.</p>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-left space-y-1.5 text-xs text-slate-700">
+        <div class="flex justify-between">
+          <span class="text-slate-500">Kod Tempahan:</span>
+          <span id="succ_code" class="font-bold text-sky-700 font-mono text-sm"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Nama:</span>
+          <span id="succ_name" class="font-semibold"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Tarikh Servis:</span>
+          <span id="succ_date" class="font-semibold"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Servis:</span>
+          <span id="succ_service" class="font-semibold text-right"></span>
+        </div>
+      </div>
+
+      <div class="pt-2 space-y-2">
+        <a id="succ_wa_btn" href="#" target="_blank" class="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md transition text-sm">
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+          <span>Hubungi Flash Energy di WhatsApp</span>
+        </a>
+        <button onclick="closeSuccessModal()" class="w-full text-slate-500 hover:text-slate-800 text-xs font-semibold py-2">
+          Tutup & Buat Tempahan Baru
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-8 px-4 border-t border-slate-800 mt-auto">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <img src="/logo.jpeg" alt="Logo" class="h-8 w-auto rounded">
+          <span class="text-white font-bold text-base">Flash Energy Sibu</span>
+        </div>
+        <p class="text-slate-400 leading-relaxed">
+          No. 38 & 40, Lot 2852 - 2853, Tingkat 1, Jalan Intan, 96000 Sibu, Sarawak.
+        </p>
+      </div>
+
+      <div class="text-center md:text-left space-y-1">
+        <div><strong>Telefon / WhatsApp:</strong> 018-959 6569</div>
+        <div><strong>Emel:</strong> flashenergysibu@gmail.com</div>
+        <div><strong>Facebook:</strong> Flash Energy Sibu</div>
+      </div>
+
+      <div class="text-center md:text-right space-y-2">
+        <a href="/admin" class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-sky-400 hover:text-sky-300 px-3.5 py-1.5 rounded-lg border border-slate-700 transition">
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+          <span>Log Masuk Staf & Admin</span>
+        </a>
+        <p class="text-[11px] text-slate-500">&copy; 2026 Flash Energy Sibu. Hak Cipta Terpelihara.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/app.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

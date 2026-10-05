@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Admin - Flash Energy Sibu</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/custom.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Top Navbar -->
+  <header class="bg-slate-900 text-white sticky top-0 z-40 border-b border-slate-800 shadow">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="/logo.jpeg" alt="Logo" class="h-10 w-auto rounded border border-slate-700">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-lg tracking-tight">FLASH ENERGY SIBU</span>
+            <span class="bg-sky-500/20 text-sky-400 text-[11px] font-semibold px-2 py-0.5 rounded border border-sky-400/30">ADMIN</span>
+          </div>
+          <p class="text-xs text-slate-400">Sistem Pengurusan Tempahan & Operasi</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Pills -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-2">
+          <span class="text-slate-400">Hari Ini:</span>
+          <span id="metric_today" class="font-bold text-amber-400 text-sm">0</span>
+        </div>
+        <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-2">
+          <span class="text-slate-400">Esok:</span>
+          <span id="metric_tomorrow" class="font-bold text-sky-400 text-sm">0</span>
+        </div>
+        <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-2">
+          <span class="text-slate-400">Akan Datang:</span>
+          <span id="metric_upcoming" class="font-bold text-indigo-400 text-sm">0</span>
+        </div>
+        <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-2">
+          <span class="text-slate-400">Perlu Lulus:</span>
+          <span id="metric_pending" class="font-bold text-rose-400 text-sm">0</span>
+        </div>
+        <a href="/" target="_blank" class="bg-sky-600 hover:bg-sky-500 text-white font-medium px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <span>Portal Pelanggan</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-4 overflow-x-auto text-sm font-semibold">
+      <button onclick="switchTab('orders')" id="tab-orders" class="tab-btn py-3 px-3 sm:px-4 border-b-2 border-sky-600 text-sky-600 flex items-center gap-2 whitespace-nowrap">
+        <i data-lucide="calendar-check" class="w-4 h-4"></i>
+        <span>Tempahan Servis</span>
+        <span id="badge-orders-count" class="bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full text-xs font-bold">0</span>
+      </button>
+
+      <button onclick="switchTab('staff')" id="tab-staff" class="tab-btn py-3 px-3 sm:px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap">
+        <i data-lucide="users" class="w-4 h-4"></i>
+        <span>Juruteknik & Staf</span>
+      </button>
+
+      <button onclick="switchTab('inventory')" id="tab-inventory" class="tab-btn py-3 px-3 sm:px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap">
+        <i data-lucide="box" class="w-4 h-4"></i>
+        <span>Inventori</span>
+        <span id="badge-inv-alert" class="hidden bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full text-xs font-bold">!</span>
+      </button>
+
+      <button onclick="switchTab('invoices')" id="tab-invoices" class="tab-btn py-3 px-3 sm:px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap">
+        <i data-lucide="receipt" class="w-4 h-4"></i>
+        <span>Invois</span>
+      </button>
+
+      <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn py-3 px-3 sm:px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap">
+        <i data-lucide="settings" class="w-4 h-4"></i>
+        <span>Tetapan & Templat WhatsApp</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+
+    <!-- ================= TAB 1: ORDERS ================= -->
+    <section id="section-orders" class="space-y-5">
+      
+      <!-- Date Filter Bar & Status Bar -->
+      <div class="fe-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <!-- Date Pills -->
+        <div class="flex flex-wrap items-center gap-1.5 text-xs font-semibold">
+          <span class="text-slate-400 mr-1 uppercase tracking-wider text-[11px]">Jadual:</span>
+          <button onclick="setDateFilter('all')" id="df-all" class="date-filter-btn px-3 py-1.5 rounded-lg bg-sky-600 text-white transition">
+            Semua Tempahan
+          </button>
+          <button onclick="setDateFilter('today')" id="df-today" class="date-filter-btn px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
+            <span>Hari Ini</span>
+            <span id="df-today-badge" class="bg-amber-200 text-amber-900 px-1.5 py-0.2 rounded-full text-[10px]">0</span>
+          </button>
+          <button onclick="setDateFilter('tomorrow')" id="df-tomorrow" class="date-filter-btn px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
+            <span>Esok</span>
+            <span id="df-tomorrow-badge" class="bg-sky-200 text-sky-900 px-1.5 py-0.2 rounded-full text-[10px]">0</span>
+          </button>
+          <button onclick="setDateFilter('upcoming')" id="df-upcoming" class="date-filter-btn px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
+            <span>Akan Datang</span>
+            <span id="df-upcoming-badge" class="bg-indigo-200 text-indigo-900 px-1.5 py-0.2 rounded-full text-[10px]">0</span>
+          </button>
+          <button onclick="setDateFilter('past')" id="df-past" class="date-filter-btn px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+            Terdahulu
+          </button>
+        </div>
+
+        <!-- Search & Status Select -->
+        <div class="flex flex-wrap items-center gap-2">
+          <select id="statusFilter" onchange="loadOrders()" class="text-xs font-medium px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-sky-500">
+            <option value="all">Semua Status</option>
+            <option value="pending">Menunggu (Pending)</option>
+            <option value="approved">Diluluskan (Approved)</option>
+            <option value="in_progress">Sedang Servis (In Progress)</option>
+            <option value="completed">Selesai (Completed)</option>
+            <option value="rejected">Ditolak (Rejected)</option>
+          </select>
+
+          <div class="relative">
+            <input type="text" id="orderSearch" oninput="debounceSearch()" placeholder="Cari nama, no tel, kod..." class="text-xs pl-8 pr-3 py-2 bg-white border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-sky-500 w-48 sm:w-60">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
+          </div>
+
+          <button onclick="loadOrders(); loadMetrics();" class="p-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-600 transition" title="Muat Semula">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Orders List Container -->
+      <div class="fe-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[11px]">
+              <tr>
+                <th class="py-3 px-4">Kod & Tarikh Servis</th>
+                <th class="py-3 px-4">Maklumat Pelanggan</th>
+                <th class="py-3 px-4">Servis & Unit</th>
+                <th class="py-3 px-4">Alamat Lokasi</th>
+                <th class="py-3 px-4">Juruteknik</th>
+                <th class="py-3 px-4">Status</th>
+                <th class="py-3 px-4 text-center">Tindakan Pengurusan</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody" class="divide-y divide-slate-100">
+              <!-- Dynamically populated -->
+              <tr>
+                <td colspan="7" class="text-center py-8 text-slate-400">Sedang memuat data tempahan...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: STAFF & DISPATCH ================= -->
+    <section id="section-staff" class="space-y-5 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">Senarai Juruteknik & Staf</h2>
+          <p class="text-xs text-slate-500">Urus penugasan tugasan servis aircond dan pendawaian elektrik</p>
+        </div>
+        <button onclick="openStaffModal()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span>Tambah Juruteknik Baru</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="staffGrid">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: INVENTORY ================= -->
+    <section id="section-inventory" class="space-y-5 hidden">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">Inventori</h2>
+          <p class="text-xs text-slate-500">Kawalan stok gas aircond, kapasitor, kabel elektrik, breaker & paip tembaga</p>
+        </div>
+        <button onclick="openInventoryModal()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition flex items-center gap-1.5 self-start sm:self-auto">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>Tambah Alat Ganti Baru</span>
+        </button>
+      </div>
+
+      <div class="fe-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[11px]">
+              <tr>
+                <th class="py-3 px-4">Kod Item</th>
+                <th class="py-3 px-4">Nama Barangan</th>
+                <th class="py-3 px-4">Kategori</th>
+                <th class="py-3 px-4">Baki Stok</th>
+                <th class="py-3 px-4">Harga Modal (RM)</th>
+                <th class="py-3 px-4">Harga Jual (RM)</th>
+                <th class="py-3 px-4 text-center">Tindakan Stok</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody" class="divide-y divide-slate-100">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: INVOICES & BILLING ================= -->
+    <section id="section-invoices" class="space-y-5 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">Invois & Resit Rasmi</h2>
+          <p class="text-xs text-slate-500">Jana dan cetak invois rasmi berkepala surat Flash Energy Sibu</p>
+        </div>
+      </div>
+
+      <div class="fe-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[11px]">
+              <tr>
+                <th class="py-3 px-4">No. Invois</th>
+                <th class="py-3 px-4">Kod Tempahan</th>
+                <th class="py-3 px-4">Nama Pelanggan</th>
+                <th class="py-3 px-4">Servis</th>
+                <th class="py-3 px-4">Jumlah (RM)</th>
+                <th class="py-3 px-4">Kaedah Bayaran</th>
+                <th class="py-3 px-4">Status Bayaran</th>
+                <th class="py-3 px-4 text-center">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="invoicesTableBody" class="divide-y divide-slate-100">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 5: SETTINGS & WHATSAPP TEMPLATE ================= -->
+    <section id="section-settings" class="space-y-5 hidden">
+      <div class="fe-card p-6 max-w-3xl space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">Tetapan Mesej WhatsApp & Profil Syarikat</h2>
+          <p class="text-xs text-slate-500">Anda boleh ubah templat mesej WhatsApp automatik yang dihantar kepada pelanggan di sini.</p>
+        </div>
+
+        <form id="settingsForm" onsubmit="saveSettings(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">
+              Templat Mesej WhatsApp <span class="text-rose-500">*</span>
+            </label>
+            <textarea id="set_whatsapp_template" rows="4" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-sm font-sans focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
+            
+            <!-- Variable Chips Guide -->
+            <div class="mt-2 p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs space-y-1 text-slate-600">
+              <span class="font-bold text-slate-800">Pembolehubah automatik yang disokong:</span>
+              <div class="flex flex-wrap gap-1.5 mt-1 font-mono text-[11px]">
+                <span class="bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded cursor-pointer" onclick="insertVariable('{name}')">{name}</span>
+                <span class="bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded cursor-pointer" onclick="insertVariable('{service}')">{service}</span>
+                <span class="bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded cursor-pointer" onclick="insertVariable('{date}')">{date}</span>
+                <span class="bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded cursor-pointer" onclick="insertVariable('{time}')">{time}</span>
+                <span class="bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded cursor-pointer" onclick="insertVariable('{address}')">{address}</span>
+                <span class="bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded cursor-pointer" onclick="insertVariable('{order_code}')">{order_code}</span>
+                <span class="bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded cursor-pointer" onclick="insertVariable('{estimated_cost}')">{estimated_cost}</span>
+              </div>
+              <p class="text-[11px] text-slate-400 italic">Klik pada mana-mana cip pembolehubah untuk memasukkannya ke dalam templat mesej.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Nama Syarikat</label>
+              <input type="text" id="set_company_name" class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">No. Telefon WhatsApp Syarikat</label>
+              <input type="text" id="set_company_phone" class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Emel Rasmi Syarikat</label>
+              <input type="email" id="set_company_email" class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Facebook</label>
+              <input type="text" id="set_company_facebook" class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Alamat Perniagaan (Sibu)</label>
+              <input type="text" id="set_company_address" class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+            </div>
+          </div>
+
+          <div class="pt-4 border-t flex justify-end">
+            <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-6 py-2.5 rounded-lg text-sm transition flex items-center gap-1.5 shadow">
+              <i data-lucide="save" class="w-4 h-4"></i>
+              <span>Simpan Tetapan</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- WhatsApp Action Modal -->
+  <div id="waModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2 text-emerald-600">
+          <i data-lucide="message-circle" class="w-6 h-6"></i>
+          <h3 class="text-lg font-bold text-slate-900">Hubungi Pelanggan di WhatsApp</h3>
+        </div>
+        <button onclick="closeWaModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="flex justify-between items-center bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+          <div>
+            <span class="text-slate-500">Nama Pelanggan:</span>
+            <span id="waModal_name" class="font-bold text-slate-800 ml-1"></span>
+          </div>
+          <div>
+            <span class="text-slate-500">No. Tel:</span>
+            <span id="waModal_phone" class="font-mono font-bold text-emerald-700 ml-1"></span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Mesej WhatsApp Pra-Sedia (Boleh diedit sebelum hantar):</label>
+          <textarea id="waModal_text" rows="5" class="w-full p-3 border border-slate-300 rounded-lg text-slate-800 font-sans focus:ring-2 focus:ring-emerald-500 outline-none text-xs leading-relaxed"></textarea>
+        </div>
+      </div>
+
+      <div class="pt-2 flex flex-col sm:flex-row gap-2">
+        <a id="waModal_open_link" href="#" target="_blank" onclick="closeWaModal()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-center text-xs flex items-center justify-center gap-2 shadow transition">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          <span>Buka WhatsApp Web / App</span>
+        </a>
+        <button onclick="copyWaText()" class="border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span>Salin Mesej</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approve Order Modal -->
+  <div id="approveModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b">
+        <div class="flex items-center gap-2 text-sky-600">
+          <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+          <h3 class="text-lg font-bold text-slate-900">Luluskan Tempahan</h3>
+        </div>
+        <button onclick="closeApproveModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="app_order_id">
+      
+      <div class="space-y-3 text-xs">
+        <div>
+          <span class="text-slate-500">Kod Tempahan:</span>
+          <span id="app_order_code" class="font-mono font-bold text-sky-700 ml-1"></span>
+        </div>
+        <div>
+          <span class="text-slate-500">Pelanggan:</span>
+          <span id="app_order_cust" class="font-bold text-slate-800 ml-1"></span>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Tugaskan Juruteknik:</label>
+          <select id="app_staff_id" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white focus:ring-2 focus:ring-sky-500">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Anggaran Kos / Sebut Harga (RM):</label>
+          <input type="number" id="app_estimated_cost" step="0.5" placeholder="Contoh: 120.00" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-sky-500">
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Catatan Tambahan untuk Juruteknik:</label>
+          <textarea id="app_notes" rows="2" placeholder="Contoh: Bawa tangga tinggi dan gas R32..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-sky-500"></textarea>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end gap-2">
+        <button onclick="closeApproveModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
+        <button onclick="submitApproval()" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Sahkan Lulus</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Invoice Modal -->
+  <div id="createInvoiceModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b">
+        <div class="flex items-center gap-2 text-sky-600">
+          <i data-lucide="file-plus" class="w-6 h-6"></i>
+          <h3 class="text-lg font-bold text-slate-900">Jana Invois Tempahan</h3>
+        </div>
+        <button onclick="closeCreateInvoiceModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="inv_order_id">
+      <input type="hidden" id="inv_customer_name">
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between">
+          <div>
+            <span class="text-slate-500">Order:</span>
+            <span id="inv_order_code_label" class="font-mono font-bold text-sky-700 ml-1"></span>
+          </div>
+          <div>
+            <span class="text-slate-500">Pelanggan:</span>
+            <span id="inv_cust_name_label" class="font-bold text-slate-800 ml-1"></span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Penerangan Servis / Alat Ganti:</label>
+          <input type="text" id="inv_item_desc" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs" placeholder="Servis & Pemasangan Aircond">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Jumlah Bayaran (RM):</label>
+            <input type="number" id="inv_total_amount" step="0.5" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-900" placeholder="240.00">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Status Bayaran:</label>
+            <select id="inv_payment_status" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white">
+              <option value="paid">Telah Dibayar (PAID)</option>
+              <option value="unpaid">Belum Dibayar (UNPAID)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Kaedah Bayaran:</label>
+          <select id="inv_payment_method" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white">
+            <option value="Cash">Tunai (Cash)</option>
+            <option value="Online Banking / DuitNow">Online Banking / DuitNow QR</option>
+            <option value="Cheque">Cek (Cheque)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end gap-2">
+        <button onclick="closeCreateInvoiceModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
+        <button onclick="submitCreateInvoice()" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Keluarkan Invois</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printable Invoice / Receipt View Modal -->
+  <div id="printInvoiceModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-8 shadow-2xl space-y-6 border border-slate-200 my-8">
+      
+      <!-- Top Action bar in modal -->
+      <div class="flex items-center justify-between pb-3 border-b no-print">
+        <div class="flex items-center gap-2 text-slate-700 font-bold text-sm">
+          <i data-lucide="receipt" class="w-5 h-5 text-sky-600"></i>
+          <span>Pratonton Resit & Invois Rasmi</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+            <i data-lucide="printer" class="w-4 h-4"></i> Cetak / Simpan PDF
+          </button>
+          <button onclick="closePrintInvoiceModal()" class="text-slate-400 hover:text-slate-600 p-1">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable Area -->
+      <div id="printable-invoice" class="space-y-6 text-slate-800 text-xs">
+        <!-- Letterhead Header -->
+        <div class="flex items-start justify-between border-b-2 border-slate-900 pb-4">
+          <div class="flex items-center gap-3">
+            <img src="/logo.jpeg" alt="Logo" class="h-16 w-auto rounded">
+            <div>
+              <h1 class="text-xl font-extrabold text-slate-900">FLASH ENERGY SIBU</h1>
+              <p class="text-slate-500 text-[11px]">Pakar Servis Aircond & Pendawaian Elektrik</p>
+              <p class="text-slate-500 text-[10px] mt-0.5" id="pr_company_addr">No. 38 & 40, Tingkat 1, Jalan Intan, 96000 Sibu, Sarawak</p>
+              <p class="text-slate-500 text-[10px]" id="pr_company_contact">Tel: 018-959 6569 | Emel: flashenergysibu@gmail.com</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-lg font-black text-slate-900 tracking-wider" id="pr_inv_badge">INVOIS RESMI</span>
+            <div class="text-slate-600 font-mono font-bold mt-1" id="pr_inv_no">INV-202610-001</div>
+            <div class="text-slate-500 text-[10px]" id="pr_inv_date">Tarikh: 05/10/2026</div>
+          </div>
+        </div>
+
+        <!-- Bill To -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+            <div class="text-[10px] uppercase font-bold text-slate-400 mb-1">Dibilkan Kepada:</div>
+            <div class="font-bold text-slate-900 text-sm" id="pr_cust_name">Wong Ling</div>
+            <div class="text-slate-600" id="pr_cust_phone">019-876 5432</div>
+            <div class="text-slate-600 text-[11px]" id="pr_cust_addr">Lorong Pahlawan 7, 96000 Sibu</div>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+            <div class="text-[10px] uppercase font-bold text-slate-400 mb-1">Butiran Servis:</div>
+            <div><strong>Kod Tempahan:</strong> <span id="pr_order_code">FE-202610-001</span></div>
+            <div><strong>Tarikh Servis:</strong> <span id="pr_serv_date">2026-10-05</span></div>
+            <div><strong>Status Bayaran:</strong> <span id="pr_pay_status" class="font-bold text-emerald-700">DIBAYAR (PAID)</span></div>
+            <div><strong>Kaedah:</strong> <span id="pr_pay_method">DuitNow / Online Banking</span></div>
+          </div>
+        </div>
+
+        <!-- Line Items Table -->
+        <table class="w-full text-left border border-slate-200 rounded-lg overflow-hidden">
+          <thead class="bg-slate-100 text-slate-600 text-[11px] uppercase font-bold">
+            <tr>
+              <th class="py-2 px-3 border-b">No</th>
+              <th class="py-2 px-3 border-b">Penerangan Servis / Bahan</th>
+              <th class="py-2 px-3 border-b text-center">Kuantiti</th>
+              <th class="py-2 px-3 border-b text-right">Harga Unit (RM)</th>
+              <th class="py-2 px-3 border-b text-right">Jumlah (RM)</th>
+            </tr>
+          </thead>
+          <tbody id="pr_items_body" class="divide-y divide-slate-200">
+            <!-- items -->
+          </tbody>
+          <tfoot class="bg-slate-50 font-bold border-t-2 border-slate-300">
+            <tr>
+              <td colspan="4" class="py-2 px-3 text-right">JUMLAH KESELURUHAN (RM):</td>
+              <td class="py-2 px-3 text-right text-base text-slate-900" id="pr_grand_total">RM 0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <!-- Signature Block -->
+        <div class="pt-6 grid grid-cols-2 gap-8 text-[11px]">
+          <div>
+            <p class="text-slate-500 mb-12">Disahkan oleh Pelanggan:</p>
+            <div class="border-t border-slate-400 pt-1 text-slate-600">Tandatangan & Tarikh</div>
+          </div>
+          <div class="text-right">
+            <p class="text-slate-500 mb-12">Bagi Pihak Flash Energy Sibu:</p>
+            <div class="border-t border-slate-400 pt-1 text-slate-600 font-semibold">Tandatangan Pegawai Bertugas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Staff Modal -->
+  <div id="staffModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b">
+        <h3 class="text-base font-bold text-slate-900">Tambah Juruteknik / Staf</h3>
+        <button onclick="closeStaffModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitStaff(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Nama Penuh <span class="text-rose-500">*</span></label>
+          <input type="text" id="staff_name" required placeholder="Contoh: Ah Hock" class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">No. Telefon</label>
+          <input type="tel" id="staff_phone" placeholder="019-812 3456" class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Jawatan / Kemahiran <span class="text-rose-500">*</span></label>
+          <select id="staff_role" class="w-full px-3 py-2 border rounded-lg bg-white">
+            <option value="Air Conditioning Specialist">Air Conditioning Specialist</option>
+            <option value="Senior Electrician & Wireman">Senior Electrician & Wireman</option>
+            <option value="AC & Wiring Technician">AC & Wiring Technician</option>
+            <option value="Junior Apprentice">Junior Apprentice</option>
+          </select>
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeStaffModal()" class="px-3 py-1.5 text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
+          <button type="submit" class="px-4 py-1.5 bg-sky-600 text-white rounded-lg font-bold">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Inventory Modal -->
+  <div id="invModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b">
+        <h3 class="text-base font-bold text-slate-900">Tambah Alat Ganti Inventori</h3>
+        <button onclick="closeInventoryModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitInventory(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Kod Item <span class="text-rose-500">*</span></label>
+            <input type="text" id="inv_code" required placeholder="GAS-R32" class="w-full px-3 py-2 border rounded-lg uppercase">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Kategori</label>
+            <select id="inv_cat" class="w-full px-3 py-2 border rounded-lg bg-white">
+              <option value="Refrigerant">Refrigerant / Gas Aircond</option>
+              <option value="Capacitors">Kapasitor</option>
+              <option value="Wiring & Cable">Pendawaian & Kabel</option>
+              <option value="Electrical Parts">Barang Elektrik & MCB</option>
+              <option value="Pipes & Insulation">Paip & Penebat Tembaga</option>
+              <option value="Consumables">Bahan Kimia / Cuci</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">Nama Alat Ganti <span class="text-rose-500">*</span></label>
+          <input type="text" id="inv_name" required placeholder="Contoh: R32 Refrigerant Gas Cylinder (10kg)" class="w-full px-3 py-2 border rounded-lg">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Baki Kuantiti</label>
+            <input type="number" id="inv_qty" min="0" value="10" class="w-full px-3 py-2 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Unit</label>
+            <input type="text" id="inv_unit" value="pcs" class="w-full px-3 py-2 border rounded-lg">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Harga Modal (RM)</label>
+            <input type="number" id="inv_cost" step="0.5" value="0.00" class="w-full px-3 py-2 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-semibold mb-1">Harga Jual (RM)</label>
+            <input type="number" id="inv_price" step="0.5" value="0.00" class="w-full px-3 py-2 border rounded-lg">
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeInventoryModal()" class="px-3 py-1.5 text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
+          <button type="submit" class="px-4 py-1.5 bg-sky-600 text-white rounded-lg font-bold">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
